@@ -1,0 +1,42 @@
+[
+    {
+        "_index": "teste",
+        "_type": "teste",
+        "_id": "teste",
+        "_score": 1,
+        "source": {
+            "documentNumber": "teste",
+            "year": "teste",
+            "text": null,
+            "reference": "teste",
+            "branchNumber": "teste",
+            "item": "teste",
+            "issueDate": "teste",
+            "expirationDate": "teste",
+            "bank": "",
+            "number": "teste",
+            "itgCreatedDateUTC": "2019-01-21T19:43:16",
+            "itgUpdatedDateUTC": "2019-01-23T11:46:34"
+        }
+    },
+    {
+        "_index": "teste",
+        "_type": "teste",
+        "_id": "teste",
+        "_score": 1,
+        "source": {
+            "documentNumber": "teste",
+            "year": "teste",
+            "text": null,
+            "reference": "teste",
+            "branchNumber": "teste",
+            "item": "teste",
+            "issueDate": "teste",
+            "expirationDate": "teste",
+            "bank": null,
+            "number": "teste",
+            "itgCreatedDateUTC": "2019-01-21T19:43:16",
+            "itgUpdatedDateUTC": "2019-01-23T11:46:34"
+        }
+    }
+]

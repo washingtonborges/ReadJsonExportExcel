@@ -1,0 +1,103 @@
+<html>
+    <head>
+        <title>JS read external JSON</title>        
+    </head>
+    <body>
+        <input type="button" id="btnExport" value=" Export Table data into Excel " />
+        <div class="content" id="content">
+        </div>
+    </body>
+</html>
+<script src="js/jquery-3.4.0.min.js"></script>
+<script>
+  /*var listaURLObjJson = [
+  {url:"./json/billetv2-janeiro-2019.json"},
+  {url:"./json/billetv2-fevereiro-2019.json"},
+  {url:"./json/billetv2-marco-2019.json"},
+  {url:"./json/billetv2-abril-2019.json"}
+  ];*/
+  var listaURLObjJson = [
+  {url:"./json/billetv2-abril-2019.json"}
+  ];
+  tabela = $("<table>");
+  tabela.attr("border",1);
+  colunaAuxiliar = "";
+  linhaAuxiliar = "";
+  existeValorNaoPreenchido = false;
+  criarTabela(listaURLObjJson);
+
+  function criarTabela(listaURLObjJson){
+    var conteudo = $('.content');
+    conteudo.append(tabela);
+    buscaConteudoTabela(listaURLObjJson);
+  }
+
+  function buscaConteudoTabela(listaURLObjJson){
+    $.each( listaURLObjJson, function( indexUrl, dataUrl ) { 
+      if(indexUrl == 0){
+        ehPrimeiraUrl = true;
+      }          
+      $.getJSON( dataUrl.url, function( data ) {
+        criarConteudoTabela(data,ehPrimeiraUrl);
+      })   
+    });
+  }
+
+  function criarConteudoTabela(data, ehPrimeiraUrl){
+        $.each( data, function( key, val ) {
+            if(key == 0 && ehPrimeiraUrl){
+              montaCabelho(val.source, tabela);
+            }
+            linhaAuxiliar = $("<tr>");
+            $.each( val.source, function( k, v ) {
+                colunaAuxiliar = $("<td>");
+                colunaAuxiliar.text(v);
+                linhaAuxiliar.append(colunaAuxiliar);
+                if(colunasObrigatorias(k) && valorNaoPreenchido(v)){
+                  existeValorNaoPreenchido = true;
+                }
+            }) 
+            if (existeValorNaoPreenchido){
+              tabela.append(linhaAuxiliar);
+            }
+            existeValorNaoPreenchido = false; 
+      }); 
+  }
+
+  function  montaCabelho(conteudo){
+    linhaCabecalho = $("<tr>");
+    $.each( conteudo, function( key, value ) {
+      colunaCabecalho = $("<td>");
+      colunaCabecalho.text(key);
+      linhaCabecalho.append(colunaCabecalho);      
+    })
+    tabela.append(linhaCabecalho);
+  }
+
+  function valorNaoPreenchido(valor){
+    var resultado = false;
+    if(valor == null || valor == "null" || valor == "")
+      resultado = true;
+    return resultado;
+  }
+
+  function colunasObrigatorias(valor){
+    var resultado = false
+    var arrayObrigatorias = ["documentNumber","year","reference","branchNumber","item","bank","number","clientCode","clientName","cpfCnpj","value","companyCode"];
+    if(jQuery.inArray(valor, arrayObrigatorias) != -1){
+      resultado = true;
+    }
+    return resultado;
+  }
+
+  $("#btnExport").click(function(e) {
+    var a = document.createElement('a');
+    var data_type = 'data:application/vnd.ms-excel';
+    var table_div = document.getElementById('content');
+    var table_html = table_div.outerHTML.replace(/ /g, '%20');
+    a.href = data_type + ', ' + table_html;
+    a.download = 'export.xls';
+    a.click();
+    e.preventDefault();
+  });
+</script>
